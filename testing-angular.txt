@@ -1,0 +1,6 @@
+httpstesting-angular.comtesting-components#querying-the-dom-with-test-ids
+
+Github repo: https://github.com/9elements/angular-workshop
+
+Testing Angular – A Guide to Robust Angular Applications
+A free online book and e-book written by molily
