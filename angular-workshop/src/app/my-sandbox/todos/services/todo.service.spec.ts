@@ -35,45 +35,70 @@ describe('TodoService', () => {
   });
 
   /**FAKING DEPENDENCIES */
-  it('gets the to-dos : faking dependencies', async () => {
+  xit('gets the to-dos : faking dependencies', async () => {
     // Arrange
     const fetchSpy: any = jasmine.createSpy('fetch').and.returnValue(okResponse);
     const spyReturnedVal = await fetchSpy().json();
     console.log('spyReturnedVal: ', spyReturnedVal);
 
     // Assert
-    expect(spyReturnedVal[0].title).toEqual('Finish project documentation');
-    // expect(fetchSpy).toHaveBeenCalledWith('/todos');
-    expect(fetchSpy).toHaveBeenCalledWith();
+    expect(spyReturnedVal).toEqual(mockTodos);
+    expect(fetchSpy).toHaveBeenCalledWith('http://localhost:3000/todos');
+    // expect(fetchSpy).toHaveBeenCalledWith();
   });
-  
 
-  /**FAKING DEPENDENCIES and COMPARING WITH ACTUAL VALUE */
-  xit('gets the to-dos : faking dependencies & comparing with the actual value', async () => {
+  /**FAKING DEPENDENCIES and COMPARING WITH ACTUAL VALUE (jasmine.createSpy) */
+  it('gets the to-dos : faking dependencies & comparing with the actual value', async () => {
     // Arrange
-    const fetchSpy: any = jasmine.createSpy('fetch').and.returnValue(okResponse);
-    console.log('fetchSpy(): ', fetchSpy());
-    const todoService = new TodoService(fetchSpy);
+    // const fetchSpy: any = jasmine.createSpy('fetch').and.returnValue(okResponse);
+    const fetchSpy: any = jasmine.createSpy('fetch').and.returnValue(
+      Promise.resolve({
+        json: () => Promise.resolve(okResponse),
+      } as Response),
+    );
+    // const fetchSpy: any = jasmine.createSpy('fetch').and.callFake((url: string) => {
+    //   console.group('url: ', url);
+    //   return Promise.resolve({
+    //     json: () => Promise.resolve(okResponse),
+    //   } as Response);
+    // });
+
+    // Replace the global fetch with our spy
+    (window as any).fetch = fetchSpy;
+
     // Act
     const actualTodos =
-      await todoService.getTodos(); /**fetching original data in the TodoService */
+      await service.getTodos(); /**fetching original data in the TodoService */
 
-    const spyReturnedVal = await fetchSpy().json();
-    console.log('spyReturnedVal: ', spyReturnedVal);
-
-    console.log('actualTodos: ', actualTodos);
+    // console.log('actualTodos: ', actualTodos);
 
     // Assert
-    expect(actualTodos[0].title).toEqual(mockTodos[0].title);
-    // expect(fetchSpy).toHaveBeenCalledWith('/todos');
-    expect(fetchSpy).toHaveBeenCalledWith();
+    expect(actualTodos).toEqual(okResponse);
+    expect(fetchSpy).toHaveBeenCalledWith('http://localhost:3000/todos');
   });
 
+  xit('should fetch a list of todos===', async () => {
+    // Create a spy for the global fetch function
+    let fetchSpy = jasmine.createSpy('fetch').and.callFake((url: string) => {
+      console.group('url: ', url);
+      // Mock response
+      return Promise.resolve({
+        json: () => Promise.resolve(okResponse),
+      } as Response);
+    });
 
+    // Replace the global fetch with our spy
+    (window as any).fetch = fetchSpy;
 
+    // Act
+    const todos = await service.getTodos();
 
+    // Assert
+    expect(todos).toEqual(okResponse);
+    expect(fetchSpy).toHaveBeenCalledWith('http://localhost:3000/todos');
+  });
 
-  /**FAKING DEPENDENCIES and COMPARING WITH ACTUAL VALUE */
+  /**FAKING DEPENDENCIES and COMPARING WITH ACTUAL VALUE (spyOn) */
   xit('gets the to-dos : faking dependencies & comparing with the actual value', async () => {
     // Arrange
     const fetchSpy: any = spyOn(window, 'fetch').and.returnValue(
