@@ -1,19 +1,29 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnInit } from '@angular/core';
+import { Inject, Injectable, OnInit } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TodoService {
-  constructor(private http: HttpClient) {}
+  public baseUrl: string = 'http://localhost:3000';
+  constructor(
+    private http: HttpClient,
+  )
+  {}
 
-  async getTodos() {
-    const response = await fetch('http://localhost:3100/todos/');
-
+  async getTodos(): Promise<any> {
+    const response = await fetch(this.baseUrl + '/todos');
+    // if (!response.ok) {
+    //   throw new Error(`HTTP error: ${response.status} ${response.statusText}`);
+    // }
     try {
-      console.log('response: ', await response.json());
+      const data = await response.json();
+      console.log('response: ', data);
+      return data;
     } catch (error) {
       console.error('error: ', error);
     }
+
+    return [];
   }
 }
