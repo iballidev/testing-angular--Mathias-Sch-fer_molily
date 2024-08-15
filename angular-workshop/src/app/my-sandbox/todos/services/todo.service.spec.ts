@@ -167,6 +167,7 @@ describe('TodoService', () => {
     // Act
     const todos = await service.getTodos();
     console.log('todos@: ', todos);
+    console.debug('todos@: ', todos);
 
     // Assert
     expect(todos).toEqual(mockTodos);
