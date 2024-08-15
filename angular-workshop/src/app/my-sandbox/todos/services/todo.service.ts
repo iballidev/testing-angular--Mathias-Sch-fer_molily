@@ -13,17 +13,16 @@ export class TodoService {
 
   async getTodos(): Promise<any> {
     const response = await fetch(this.baseUrl + '/todos');
-    // if (!response.ok) {
-    //   throw new Error(`HTTP error: ${response.status} ${response.statusText}`);
-    // }
+    // console.log("response**: ", response)
     try {
       const data = await response.json();
-      console.log('response: ', data);
+      // console.log('response##: ', data);
       return data;
     } catch (error) {
-      console.error('error: ', error);
+      // console.error('error: ', error);
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status} ${response.statusText}`);
+      }
     }
-
-    return [];
   }
 }
