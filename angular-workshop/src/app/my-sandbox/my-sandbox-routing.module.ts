@@ -14,7 +14,12 @@ const routes: Routes = [
       },
       {
         path: 'todos',
-        component: TodosComponent,
+        loadChildren: () => import('./todos/todos.module').then((m) => m.TodosModule),
+      },
+      {
+        path: 'counter',
+        loadChildren: () =>
+          import('./sb-counter/sb-counter.module').then((m) => m.SbCounterModule),
       },
     ],
   },

@@ -1,0 +1,42 @@
+<!-- <p>sb-counter works!</p> -->
+<!-- <router-outlet /> -->
+<div class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+      <h1 class="text-2xl font-semibold text-gray-700 mb-4">Counter <span data-testid="screen">{{count}}</span></h1>
+      <div class="flex items-center space-x-4">
+        <!-- Decrement Button -->
+        <button data-testid="decrease-count-btn"
+          class="bg-red-500 text-white px-4 py-2 rounded focus:outline-none hover:bg-red-600" 
+          (click)="decrement()"
+        >
+          -
+        </button>
+        
+        <!-- Counter Input -->
+        <input data-testid="counter-input"
+          type="number" 
+          id="counterInput" 
+          class="w-20 text-center p-2 border border-gray-300 rounded"
+          [(ngModel)]="count"
+          onchange="updateCounter()"
+        >
+        
+        <!-- Increment Button -->
+        <button  data-testid="increase-count-btn"
+          class="bg-green-500 text-white px-4 py-2 rounded focus:outline-none hover:bg-green-600" 
+          (click)="increment()"
+        >
+          +
+        </button>
+      </div>
+      
+      <!-- Reset Button -->
+      <button   data-testid="reset-count-btn"
+        class="bg-blue-500 text-white px-4 py-2 rounded mt-4 focus:outline-none hover:bg-blue-600" 
+        (click)="resetCounter()"
+      >
+        Reset
+      </button>
+    </div>
+  </div>
+  
